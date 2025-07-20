@@ -1,73 +1,126 @@
-# Welcome to your Lovable project
+# GenesisOS
 
-## Project info
+Welcome to GenesisOS, an AI-native operating system for creating autonomous digital workforces.
 
-**URL**: https://lovable.dev/projects/8e3f1604-387f-43d2-b687-d46c0730ccbf
+## 🚀 Features
 
-## How can I edit this code?
+- 🧠 **AI Agents** - Intelligent digital workers with specific roles and capabilities
+- ⚡ **Quantum Canvas** - Visual workflow editor for designing agent interactions
+- 🔄 **Orchestration Engine** - Coordination of AI workers, workflows and processes
+- 🧪 **Simulation Lab** - Test your AI workforce in a safe environment before deployment
+- 🌐 **Deployment System** - Deploy your guild to production with confidence
 
-There are several ways of editing your application.
+## 🔧 Prerequisites
 
-**Use Lovable**
+- Node.js 18+
+- Python 3.8+ (with pip)
+- Npm or Yarn
+- Optional: Redis for production deployments
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8e3f1604-387f-43d2-b687-d46c0730ccbf) and start prompting.
+## 🚀 Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Quick Setup
 
-**Use your preferred IDE**
+1. Clone this repository:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+git clone https://github.com/yourusername/genesisOS.git
+cd genesisOS
 ```
 
-**Edit a file directly in GitHub**
+2. Run the setup script:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**On Linux/Mac:**
+```bash
+chmod +x setup.sh
+./setup.sh
+```
 
-**Use GitHub Codespaces**
+**On Windows:**
+```batch
+setup.bat
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+3. Start the development environment:
 
-## What technologies are used for this project?
+```bash
+npm run full-dev
+```
 
-This project is built with:
+### Manual Setup
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Install frontend dependencies:
 
-## How can I deploy this project?
+```bash
+npm install
+```
 
-Simply open [Lovable](https://lovable.dev/projects/8e3f1604-387f-43d2-b687-d46c0730ccbf) and click on Share -> Publish.
+2. Setup the Orchestrator:
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+cd orchestrator
+cp .env.example .env  # Update with your values
+npm install
+cd ..
+```
 
-Yes, you can!
+3. Setup the Agent Service:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```bash
+cd agents/agent_service
+cp .env.example .env  # Update with your values
+pip install -r requirements.txt
+cd ../..
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+4. Start all components:
+
+```bash
+npm run full-dev
+```
+
+## 🏗 Project Structure
+
+- `/src` - React frontend
+- `/orchestrator` - Node.js workflow orchestration service
+- `/agents/agent_service` - Python FastAPI service for AI agents
+- `/supabase` - Supabase database migrations and configuration
+
+## 🛠 Development Components
+
+You can run each component separately:
+
+- **Frontend**: `npm run dev`
+- **Orchestrator**: `npm run orchestrator:dev`
+- **Agent Service**: `npm run agent:dev`
+
+Or run everything with `npm run full-dev`
+
+## 🌟 User Experience
+
+GenesisOS provides a multi-step wizard for creating and managing AI workforces:
+
+1. **Welcome**: Introduction to GenesisOS capabilities
+2. **Intent**: Share your business goal or vision
+3. **Blueprint**: Review the AI-generated system architecture
+4. **Canvas**: Visualize and customize your workflow
+5. **Credentials**: Connect your tools and services
+6. **Simulation**: Test your guild in a safe environment
+7. **Deployment**: Launch your AI workforce
+
+## 🔧 Configuration
+
+Each component can be configured through its respective `.env` file:
+
+- **Root**: Frontend configuration
+- **Orchestrator**: Workflow engine configuration
+- **Agent Service**: AI service configuration
+
+## 📝 License
+
+[MIT License](LICENSE)
+
+## 👤 Contributors
+
+- The GenesisOS Team
+- Built with [Bolt.new](https://bolt.new)
