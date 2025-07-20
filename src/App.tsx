@@ -127,30 +127,6 @@ function App() {
       </main>
       <BackendStatus />
       
-      {/* Bolt.new Attribution - Fixed Position */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <a
-          href="https://bolt.new"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block hover:scale-110 transition-all duration-200 group"
-          title="Powered by Bolt.new"
-        >
-          <div className="relative">
-            <img
-              src="/black_circle_360x360.png"
-              alt="Powered by Bolt.new"
-              className="w-16 h-16 rounded-full shadow-2xl group-hover:shadow-3xl transition-all duration-200 ring-2 ring-white/20 group-hover:ring-white/40"
-            />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/30 to-pink-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-            
-            {/* Subtle label on hover */}
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-3 py-1 rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-              Powered by Bolt.new
-            </div>
-          </div>
-        </a>
-      </div>
     </div>
   );
 }

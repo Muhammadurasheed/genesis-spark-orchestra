@@ -14,8 +14,8 @@ export default defineConfig({
     // Force HTTP in development to avoid mixed content issues
     https: false,
     host: true, // Allow external connections
-    port: 5173,
-    strictPort: false, // Allow port fallback if 5173 is taken
+    port: 8080,
+    strictPort: false, // Allow port fallback if 8080 is taken
   },
   // Ensure proper protocol handling
   define: {
