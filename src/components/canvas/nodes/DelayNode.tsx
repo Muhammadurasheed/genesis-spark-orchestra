@@ -2,9 +2,10 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Clock, Timer, Pause, Settings } from 'lucide-react';
-import { DelayNodeData } from '../../../types/canvas';
 
-const DelayNode = memo(({ data, selected }: NodeProps<DelayNodeData>) => {
+const DelayNode = memo(({ data, selected }: NodeProps) => {
+  const nodeData = data as any;
+
   const getDelayIcon = (type: string) => {
     switch (type) {
       case 'fixed': return <Clock className="h-5 w-5" />;
@@ -49,12 +50,12 @@ const DelayNode = memo(({ data, selected }: NodeProps<DelayNodeData>) => {
       />
       
       <div className="flex items-center space-x-3 mb-3">
-        <div className={`p-2 rounded-lg ${getDelayColor(data.delayType)}`}>
-          {getDelayIcon(data.delayType)}
+        <div className={`p-2 rounded-lg ${getDelayColor(nodeData.delayType)}`}>
+          {getDelayIcon(nodeData.delayType)}
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 text-sm">{data.label}</h3>
-          <p className="text-xs text-gray-600 capitalize">{data.delayType}</p>
+          <h3 className="font-semibold text-gray-900 text-sm">{nodeData.label}</h3>
+          <p className="text-xs text-gray-600 capitalize">{nodeData.delayType}</p>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded">
           <Settings className="h-4 w-4 text-gray-500" />
@@ -62,13 +63,13 @@ const DelayNode = memo(({ data, selected }: NodeProps<DelayNodeData>) => {
       </div>
 
       <div className="space-y-2">
-        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(data.status)}`}>
-          <span className="capitalize">{data.status}</span>
+        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(nodeData.status)}`}>
+          <span className="capitalize">{nodeData.status}</span>
         </div>
         
-        {data.duration && (
+        {nodeData.duration && (
           <div className="text-xs text-gray-600">
-            Duration: {data.duration}
+            Duration: {nodeData.duration}
           </div>
         )}
       </div>

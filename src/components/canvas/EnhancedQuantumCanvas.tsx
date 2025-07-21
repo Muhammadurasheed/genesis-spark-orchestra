@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import {
   ReactFlow,
@@ -57,14 +56,14 @@ import ActionNode from './nodes/ActionNode';
 import ConditionNode from './nodes/ConditionNode';
 import DelayNode from './nodes/DelayNode';
 
-// Node types configuration - using type assertion to fix the type mismatch
+// Node types configuration
 const nodeTypes: NodeTypes = {
-  agent: AgentNode as any,
-  trigger: TriggerNode as any,
-  action: ActionNode as any,
-  condition: ConditionNode as any,
-  delay: DelayNode as any,
-};
+  agent: AgentNode,
+  trigger: TriggerNode,
+  action: ActionNode,
+  condition: ConditionNode,
+  delay: DelayNode,
+} as any;
 
 // Initial nodes and edges
 const initialNodes: Node[] = [
@@ -203,17 +202,17 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
         },
       };
       setEdges((eds) => addEdge(edge, eds));
-      addToHistory(nodes, [...edges, edge]);
+      addToHistory(nodes, [...edges, edge] as any);
     },
     [nodes, edges, addToHistory, setEdges]
   );
 
-  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     setSelectedNode(node as Node<NodeData>);
     setSelectedNodes([node.id]);
   }, [setSelectedNodes]);
 
-  const onNodeDoubleClick = useCallback((event: React.MouseEvent, node: Node) => {
+  const onNodeDoubleClick = useCallback((_: React.MouseEvent, node: Node) => {
     setSelectedNode(node as Node<NodeData>);
   }, []);
 
@@ -340,9 +339,7 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
     <div className={`relative w-full h-full ${className}`}>
       {showNeuralNetwork && (
         <div className="absolute inset-0 z-0">
-          <NeuralNetwork 
-            intensity={particleIntensity}
-          />
+          <NeuralNetwork />
         </div>
       )}
 
@@ -385,7 +382,7 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
           onSelectionEnd={() => setIsSelecting(false)}
         >
           <Background 
-            variant={showGrid ? ('dots' as BackgroundVariant) : ('lines' as BackgroundVariant)}
+            variant={showGrid ? BackgroundVariant.Dots : BackgroundVariant.Lines}
             gap={15}
             size={1}
             color="#e2e8f0"

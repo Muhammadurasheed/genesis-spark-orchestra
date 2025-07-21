@@ -2,9 +2,10 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Send, Mail, Database, Webhook, Bell, Settings, CheckCircle, XCircle } from 'lucide-react';
-import { ActionNodeData } from '../../../types/canvas';
 
-const ActionNode = memo(({ data, selected }: NodeProps<ActionNodeData>) => {
+const ActionNode = memo(({ data, selected }: NodeProps) => {
+  const nodeData = data as any;
+
   const getActionIcon = (type: string) => {
     switch (type) {
       case 'api': return <Send className="h-5 w-5" />;
@@ -60,12 +61,12 @@ const ActionNode = memo(({ data, selected }: NodeProps<ActionNodeData>) => {
       />
       
       <div className="flex items-center space-x-3 mb-3">
-        <div className={`p-2 rounded-lg ${getActionColor(data.actionType)}`}>
-          {getActionIcon(data.actionType)}
+        <div className={`p-2 rounded-lg ${getActionColor(nodeData.actionType)}`}>
+          {getActionIcon(nodeData.actionType)}
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 text-sm">{data.label}</h3>
-          <p className="text-xs text-gray-600 capitalize">{data.actionType}</p>
+          <h3 className="font-semibold text-gray-900 text-sm">{nodeData.label}</h3>
+          <p className="text-xs text-gray-600 capitalize">{nodeData.actionType}</p>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded">
           <Settings className="h-4 w-4 text-gray-500" />
@@ -73,22 +74,22 @@ const ActionNode = memo(({ data, selected }: NodeProps<ActionNodeData>) => {
       </div>
 
       <div className="space-y-2">
-        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(data.status)}`}>
+        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(nodeData.status)}`}>
           <div className="flex items-center space-x-1">
-            {getStatusIcon(data.status)}
-            <span className="capitalize">{data.status}</span>
+            {getStatusIcon(nodeData.status)}
+            <span className="capitalize">{nodeData.status}</span>
           </div>
         </div>
         
-        {data.validation && !data.validation.isValid && (
+        {nodeData.validation && !nodeData.validation.isValid && (
           <div className="text-xs text-red-600">
-            {data.validation.errors.length} validation error(s)
+            {nodeData.validation.errors.length} validation error(s)
           </div>
         )}
         
-        {data.metrics && (
+        {nodeData.metrics && (
           <div className="text-xs text-gray-600">
-            Executed: {data.metrics.executionCount} times
+            Executed: {nodeData.metrics.executionCount} times
           </div>
         )}
       </div>

@@ -2,9 +2,10 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Zap, Clock, Webhook, MousePointer, Settings } from 'lucide-react';
-import { TriggerNodeData } from '../../../types/canvas';
 
-const TriggerNode = memo(({ data, selected }: NodeProps<TriggerNodeData>) => {
+const TriggerNode = memo(({ data, selected }: NodeProps) => {
+  const nodeData = data as any;
+
   const getTriggerIcon = (type: string) => {
     switch (type) {
       case 'manual': return <MousePointer className="h-5 w-5" />;
@@ -44,12 +45,12 @@ const TriggerNode = memo(({ data, selected }: NodeProps<TriggerNodeData>) => {
       `}
     >
       <div className="flex items-center space-x-3 mb-3">
-        <div className={`p-2 rounded-lg ${getTriggerColor(data.triggerType)}`}>
-          {getTriggerIcon(data.triggerType)}
+        <div className={`p-2 rounded-lg ${getTriggerColor(nodeData.triggerType)}`}>
+          {getTriggerIcon(nodeData.triggerType)}
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 text-sm">{data.label}</h3>
-          <p className="text-xs text-gray-600 capitalize">{data.triggerType}</p>
+          <h3 className="font-semibold text-gray-900 text-sm">{nodeData.label}</h3>
+          <p className="text-xs text-gray-600 capitalize">{nodeData.triggerType}</p>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded">
           <Settings className="h-4 w-4 text-gray-500" />
@@ -57,19 +58,19 @@ const TriggerNode = memo(({ data, selected }: NodeProps<TriggerNodeData>) => {
       </div>
 
       <div className="space-y-2">
-        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(data.status)}`}>
-          <span className="capitalize">{data.status}</span>
+        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(nodeData.status)}`}>
+          <span className="capitalize">{nodeData.status}</span>
         </div>
         
-        {data.schedule && data.triggerType === 'schedule' && (
+        {nodeData.schedule && nodeData.triggerType === 'schedule' && (
           <div className="text-xs text-gray-600">
-            Next: {data.schedule.nextRun || 'Not scheduled'}
+            Next: {nodeData.schedule.nextRun || 'Not scheduled'}
           </div>
         )}
         
-        {data.webhook && data.triggerType === 'webhook' && (
+        {nodeData.webhook && nodeData.triggerType === 'webhook' && (
           <div className="text-xs text-gray-600">
-            Method: {data.webhook.method || 'POST'}
+            Method: {nodeData.webhook.method || 'POST'}
           </div>
         )}
       </div>

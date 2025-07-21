@@ -2,9 +2,10 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Bot, Settings, Play, Pause, AlertCircle } from 'lucide-react';
-import { AgentNodeData } from '../../../types/canvas';
 
-const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => {
+const AgentNode = memo(({ data, selected }: NodeProps) => {
+  const nodeData = data as any;
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'ready': return 'bg-green-100 text-green-800 border-green-200';
@@ -44,8 +45,8 @@ const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => {
           <Bot className="h-5 w-5 text-blue-600" />
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 text-sm">{data.label}</h3>
-          <p className="text-xs text-gray-600">{data.role}</p>
+          <h3 className="font-semibold text-gray-900 text-sm">{nodeData.label}</h3>
+          <p className="text-xs text-gray-600">{nodeData.role}</p>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded">
           <Settings className="h-4 w-4 text-gray-500" />
@@ -53,17 +54,17 @@ const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => {
       </div>
 
       <div className="space-y-2">
-        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(data.status)}`}>
+        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(nodeData.status)}`}>
           <div className="flex items-center space-x-1">
-            {getStatusIcon(data.status)}
-            <span className="capitalize">{data.status}</span>
+            {getStatusIcon(nodeData.status)}
+            <span className="capitalize">{nodeData.status}</span>
           </div>
         </div>
         
-        {data.tools && data.tools.length > 0 && (
+        {nodeData.tools && nodeData.tools.length > 0 && (
           <div className="text-xs text-gray-600">
-            Tools: {data.tools.slice(0, 2).join(', ')}
-            {data.tools.length > 2 && ` +${data.tools.length - 2} more`}
+            Tools: {nodeData.tools.slice(0, 2).join(', ')}
+            {nodeData.tools.length > 2 && ` +${nodeData.tools.length - 2} more`}
           </div>
         )}
       </div>

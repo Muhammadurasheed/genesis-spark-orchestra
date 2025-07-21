@@ -2,9 +2,10 @@
 import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { GitBranch, Filter, ToggleLeft, Shield, Settings } from 'lucide-react';
-import { ConditionNodeData } from '../../../types/canvas';
 
-const ConditionNode = memo(({ data, selected }: NodeProps<ConditionNodeData>) => {
+const ConditionNode = memo(({ data, selected }: NodeProps) => {
+  const nodeData = data as any;
+
   const getConditionIcon = (type: string) => {
     switch (type) {
       case 'if': return <GitBranch className="h-5 w-5" />;
@@ -51,12 +52,12 @@ const ConditionNode = memo(({ data, selected }: NodeProps<ConditionNodeData>) =>
       />
       
       <div className="flex items-center space-x-3 mb-3">
-        <div className={`p-2 rounded-lg ${getConditionColor(data.conditionType)}`}>
-          {getConditionIcon(data.conditionType)}
+        <div className={`p-2 rounded-lg ${getConditionColor(nodeData.conditionType)}`}>
+          {getConditionIcon(nodeData.conditionType)}
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 text-sm">{data.label}</h3>
-          <p className="text-xs text-gray-600 capitalize">{data.conditionType}</p>
+          <h3 className="font-semibold text-gray-900 text-sm">{nodeData.label}</h3>
+          <p className="text-xs text-gray-600 capitalize">{nodeData.conditionType}</p>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded">
           <Settings className="h-4 w-4 text-gray-500" />
@@ -64,13 +65,13 @@ const ConditionNode = memo(({ data, selected }: NodeProps<ConditionNodeData>) =>
       </div>
 
       <div className="space-y-2">
-        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(data.status)}`}>
-          <span className="capitalize">{data.status}</span>
+        <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(nodeData.status)}`}>
+          <span className="capitalize">{nodeData.status}</span>
         </div>
         
-        {data.condition && (
+        {nodeData.condition && (
           <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-            {data.condition.length > 50 ? `${data.condition.substring(0, 50)}...` : data.condition}
+            {nodeData.condition.length > 50 ? `${nodeData.condition.substring(0, 50)}...` : nodeData.condition}
           </div>
         )}
       </div>
