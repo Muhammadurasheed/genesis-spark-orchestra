@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+
+import { useEffect, useState } from 'react';
 import { useAuthStore } from './stores/authStore';
 import { RevolutionaryLanding } from './components/landing/RevolutionaryLanding';
 import { AuthForm } from './components/auth/AuthForm';
@@ -11,19 +11,24 @@ import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
 import { MagicalBackground } from './components/ui/MagicalBackground';
 import { getAuthErrorFromURL } from './lib/auth-utils';
 import { HolographicButton } from './components/ui/HolographicButton';
+import { MainDashboard } from './components/pages/MainDashboard';
+import { AgentsPage } from './components/pages/AgentsPage';
+import { GuildsPage } from './components/pages/GuildsPage';
+import { MarketplacePage } from './components/pages/MarketplacePage';
 
 type AppState = 'landing' | 'auth' | 'app';
+type AppPage = 'dashboard' | 'guilds' | 'agents' | 'marketplace' | 'wizard' | 'analytics';
 
 function App() {
   const { user, loading, initialize } = useAuthStore();
   const [appState, setAppState] = useState<AppState>('app');
+  const [currentPage, setCurrentPage] = useState<AppPage>('dashboard');
   const [guestMode, setGuestMode] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [showAnalytics, setShowAnalytics] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
-    console.log('🚀 Phase 3: Initializing GenesisOS with Backend Integration...');
+    console.log('🚀 Phase 1: Initializing GenesisOS Foundation...');
     initialize();
     
     // Check for auth errors in URL
@@ -37,7 +42,7 @@ function App() {
   useEffect(() => {
     if (!loading) {
       if (user || guestMode) {
-        console.log('✅ User authenticated - entering Genesis with Phase 3 capabilities:', user?.email || 'Guest Mode');
+        console.log('✅ User authenticated - entering Genesis Platform:', user?.email || 'Guest Mode');
         setAppState('app');
       } else if (!guestMode) {
         console.log('👤 Anonymous user - showing landing experience');
@@ -64,14 +69,14 @@ function App() {
             
             <div className="mt-8 space-y-2">
               <p className="text-white/90 text-lg font-medium">Initializing AI-Native Workspace</p>
-              <p className="text-white/60 text-sm">Connecting to Phase 3 intelligence...</p>
+              <p className="text-white/60 text-sm">Loading revolutionary platform...</p>
             </div>
             
             {/* Progress indicators */}
             <div className="mt-6 space-y-1 text-white/40 text-xs">
               <p>🧠 Loading neural networks...</p>
               <p>⚡ Establishing quantum connections...</p>
-              <p>🌟 Preparing Phase 3 backend...</p>
+              <p>🌟 Preparing digital workforce...</p>
             </div>
           </div>
         </div>
@@ -104,29 +109,37 @@ function App() {
     );
   }
 
-  // User is authenticated or in guest mode - show the main Phase 3 Genesis experience
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <MainDashboard />;
+      case 'guilds':
+        return <GuildsPage />;
+      case 'agents':
+        return <AgentsPage />;
+      case 'marketplace':
+        return <MarketplacePage />;
+      case 'wizard':
+        return <EnhancedWizardFlow />;
+      case 'analytics':
+        return <AnalyticsDashboard guildId="main-guild" />;
+      default:
+        return <MainDashboard />;
+    }
+  };
+
+  // User is authenticated or in guest mode - show the main Genesis experience
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header isGuest={guestMode} />
+      <Header 
+        isGuest={guestMode} 
+        currentPage={currentPage}
+        onNavigate={setCurrentPage}
+      />
       <main>
-        {showAnalytics ? (
-          <div className="container mx-auto py-8">
-            <AnalyticsDashboard guildId="test-guild" />
-            <div className="mt-8 text-center">
-              <HolographicButton 
-                onClick={() => setShowAnalytics(false)} 
-                variant="outline"
-              >
-                Return to Wizard
-              </HolographicButton>
-            </div>
-          </div>
-        ) : (
-          <EnhancedWizardFlow />
-        )}
+        {renderCurrentPage()}
       </main>
       <BackendStatus />
-      
     </div>
   );
 }

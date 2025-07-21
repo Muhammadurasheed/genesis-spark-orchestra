@@ -1,14 +1,27 @@
+
 import React from 'react';
-import { UserCircle, LogOut, Settings, Plus } from 'lucide-react';
+import { UserCircle, LogOut, Settings, Plus, Users, Bot, Store, BarChart3, Home } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { Button } from '../ui/Button';
 
+type AppPage = 'dashboard' | 'guilds' | 'agents' | 'marketplace' | 'wizard' | 'analytics';
+
 interface HeaderProps {
   isGuest?: boolean;
+  currentPage: AppPage;
+  onNavigate: (page: AppPage) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ isGuest = false }) => {
+export const Header: React.FC<HeaderProps> = ({ isGuest = false, currentPage, onNavigate }) => {
   const { user, signOut } = useAuthStore();
+
+  const navigationItems = [
+    { key: 'dashboard', label: 'Dashboard', icon: Home },
+    { key: 'guilds', label: 'Guilds', icon: Users },
+    { key: 'agents', label: 'Agents', icon: Bot },
+    { key: 'marketplace', label: 'Marketplace', icon: Store },
+    { key: 'analytics', label: 'Analytics', icon: BarChart3 },
+  ];
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 relative z-50">
@@ -22,25 +35,35 @@ export const Header: React.FC<HeaderProps> = ({ isGuest = false }) => {
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">
-              Dashboard
-            </a>
-            <a href="/guilds" className="text-gray-600 hover:text-gray-900 font-medium">
-              Guilds
-            </a>
-            <a href="/agents" className="text-gray-600 hover:text-gray-900 font-medium">
-              Agents
-            </a>
-            <a href="/marketplace" className="text-gray-600 hover:text-gray-900 font-medium">
-              Marketplace
-            </a>
+            {navigationItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.key}
+                  onClick={() => onNavigate(item.key as AppPage)}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    currentPage === item.key
+                      ? 'bg-blue-100 text-blue-700 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
           </nav>
         </div>
 
         <div className="flex items-center space-x-4">
-          <Button variant="primary" size="sm" className="hidden md:flex">
+          <Button 
+            variant="primary" 
+            size="sm" 
+            className="hidden md:flex"
+            onClick={() => onNavigate('wizard')}
+          >
             <Plus className="w-4 h-4 mr-2" />
-            Create Guild
+            Create Digital Worker
           </Button>
 
           <div className="relative">
