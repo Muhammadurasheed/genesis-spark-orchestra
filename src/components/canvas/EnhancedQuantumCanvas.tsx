@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useRef } from 'react';
 import {
   ReactFlow,
@@ -55,13 +56,13 @@ import ActionNode from './nodes/ActionNode';
 import ConditionNode from './nodes/ConditionNode';
 import DelayNode from './nodes/DelayNode';
 
-// Node types configuration
+// Node types configuration - using type assertion to fix the type mismatch
 const nodeTypes: NodeTypes = {
-  agent: AgentNode,
-  trigger: TriggerNode,
-  action: ActionNode,
-  condition: ConditionNode,
-  delay: DelayNode,
+  agent: AgentNode as any,
+  trigger: TriggerNode as any,
+  action: ActionNode as any,
+  condition: ConditionNode as any,
+  delay: DelayNode as any,
 };
 
 // Initial nodes and edges
