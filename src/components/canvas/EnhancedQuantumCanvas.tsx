@@ -18,7 +18,7 @@ import '@xyflow/react/dist/style.css';
 import { Button } from '../ui/Button';
 import { Play, Save, Undo, Redo, Trash2, Settings, Eye, Copy, Download, Upload, RefreshCw, Zap } from 'lucide-react';
 import { NodeConfigPanel } from '../ui/NodeConfig/NodeConfigPanel';
-import { useCanvasStore } from '../../stores/canvasStore';
+import { useCanvasControls } from '../../hooks/useCanvasControls';
 import { CanvasEdge } from '../../types/canvas';
 
 // Import our custom nodes with default imports
@@ -95,11 +95,9 @@ const initialEdges: Edge[] = [
 export const EnhancedQuantumCanvas: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationSpeed] = useState(1);
   const [autoSave] = useState(true);
-  const [isConfigPanelOpen, setIsConfigPanelOpen] = useState(false);
   const [nodeCounter, setNodeCounter] = useState(4);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [workflowName, setWorkflowName] = useState('Untitled Workflow');
@@ -108,12 +106,20 @@ export const EnhancedQuantumCanvas: React.FC = () => {
 
   const { fitView } = useReactFlow();
 
-  // Canvas store for history
-  const { addToHistory, undo, redo, history, historyIndex } = useCanvasStore();
-  
-  // Calculate undo/redo states
-  const canUndo = historyIndex > 0;
-  const canRedo = historyIndex < history.length - 1;
+  // Canvas controls hook
+  const {
+    selectedNode,
+    isNodeConfigOpen,
+    openNodeConfig,
+    closeNodeConfig,
+    updateNodeData,
+    deleteNode,
+    canUndo,
+    canRedo,
+    addToHistory,
+    undo,
+    redo,
+  } = useCanvasControls();
 
   // Add initial state to history
   useEffect(() => {
@@ -132,10 +138,9 @@ export const EnhancedQuantumCanvas: React.FC = () => {
   }, [autoSave, nodes, edges]);
 
   // Handle node selection
-  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setSelectedNode(node);
-    setIsConfigPanelOpen(true);
-  }, []);
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+    openNodeConfig(node.id);
+  }, [openNodeConfig]);
 
   // Handle connection creation
   const onConnect = useCallback(
@@ -157,13 +162,11 @@ export const EnhancedQuantumCanvas: React.FC = () => {
   // Handle selection changes
   const onSelectionChange = useCallback((params: { nodes: Node[]; edges: Edge[] }) => {
     if (params.nodes.length === 1) {
-      setSelectedNode(params.nodes[0]);
-      setIsConfigPanelOpen(true);
+      openNodeConfig(params.nodes[0].id);
     } else if (params.nodes.length === 0) {
-      setSelectedNode(null);
-      setIsConfigPanelOpen(false);
+      closeNodeConfig();
     }
-  }, []);
+  }, [openNodeConfig, closeNodeConfig]);
 
   const onNodesDelete = useCallback(() => {
     console.log('Deleted nodes');
@@ -228,24 +231,6 @@ export const EnhancedQuantumCanvas: React.FC = () => {
     input.click();
   }, [setNodes, setEdges, addToHistory]);
 
-  const handleNodeConfigSave = useCallback((nodeId: string, config: any) => {
-    setNodes(currentNodes =>
-      currentNodes.map(node =>
-        node.id === nodeId
-          ? { ...node, data: { ...node.data, ...config } }
-          : node
-      )
-    );
-    addToHistory(nodes, convertToCanvasEdges(edges));
-  }, [setNodes, nodes, edges, addToHistory]);
-
-  const handleNodeConfigDelete = useCallback((nodeId: string) => {
-    setNodes(currentNodes => currentNodes.filter(node => node.id !== nodeId));
-    setEdges(currentEdges => currentEdges.filter(edge => edge.source !== nodeId && edge.target !== nodeId));
-    setSelectedNode(null);
-    addToHistory(nodes, convertToCanvasEdges(edges));
-  }, [setNodes, setEdges, nodes, edges, addToHistory]);
-
   const nodePaletteItems = [
     { type: 'trigger', label: 'Trigger', icon: Zap, color: 'bg-yellow-500' },
     { type: 'agent', label: 'Agent', icon: Settings, color: 'bg-blue-500' },
@@ -273,9 +258,9 @@ export const EnhancedQuantumCanvas: React.FC = () => {
   const handleClearCanvas = useCallback(() => {
     setNodes([]);
     setEdges([]);
-    setSelectedNode(null);
+    closeNodeConfig();
     setNodeCounter(1);
-  }, [setNodes, setEdges]);
+  }, [setNodes, setEdges, closeNodeConfig]);
 
   const handleFitView = useCallback(() => {
     fitView({ padding: 0.1 });
@@ -481,13 +466,13 @@ export const EnhancedQuantumCanvas: React.FC = () => {
         </div>
 
         {/* Configuration Panel */}
-        {isConfigPanelOpen && selectedNode && (
+        {isNodeConfigOpen && selectedNode && (
           <div className="w-80 bg-white border-l border-gray-200">
             <NodeConfigPanel
               node={selectedNode as any}
-              onSave={handleNodeConfigSave}
-              onDelete={handleNodeConfigDelete}
-              onClose={() => setIsConfigPanelOpen(false)}
+              onUpdate={updateNodeData}
+              onDelete={deleteNode}
+              onClose={closeNodeConfig}
             />
           </div>
         )}
