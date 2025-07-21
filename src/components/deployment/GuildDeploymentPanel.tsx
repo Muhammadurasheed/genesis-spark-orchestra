@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Rocket, 
@@ -36,7 +36,7 @@ export const GuildDeploymentPanel: React.FC<GuildDeploymentPanelProps> = ({
   const [deploymentId, setDeploymentId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [deploymentResult, setDeploymentResult] = useState<DeploymentResult | null>(null);
-  const [deploymentError, setDeploymentError] = useState<string | null>(null);
+  const [deploymentError] = useState<string | null>(null);
   
   // Define deployment steps
   const deploymentSteps = [
