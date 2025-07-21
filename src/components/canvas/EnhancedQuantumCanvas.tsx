@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import {
   ReactFlow,
@@ -46,7 +45,7 @@ import {
 } from 'lucide-react';
 
 import { NodeConfigPanel } from '../ui/NodeConfig/NodeConfigPanel';
-import { NodeData } from '../../types/canvas';
+import { NodeData, CanvasEdge } from '../../types/canvas';
 import { useEnhancedCanvasStore } from '../../stores/enhancedCanvasStore';
 import { NeuralNetwork } from '../ui/NeuralNetwork';
 
@@ -204,7 +203,14 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
       };
       const newEdges = addEdge(edge, edges);
       setEdges(newEdges);
-      addToHistory(nodes, newEdges as any);
+      // Convert edges to CanvasEdge format for addToHistory
+      const canvasEdges: CanvasEdge[] = newEdges.map(e => ({
+        ...e,
+        sourceHandle: e.sourceHandle || null,
+        targetHandle: e.targetHandle || null,
+        type: e.type || 'default'
+      }));
+      addToHistory(nodes, canvasEdges);
     },
     [nodes, edges, addToHistory, setEdges]
   );
@@ -230,12 +236,26 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
 
   const onNodesDelete = useCallback((deletedNodes: Node[]) => {
     console.log('Deleted nodes:', deletedNodes);
-    addToHistory(nodes, edges as any);
+    // Convert edges to CanvasEdge format for addToHistory
+    const canvasEdges: CanvasEdge[] = edges.map(e => ({
+      ...e,
+      sourceHandle: e.sourceHandle || null,
+      targetHandle: e.targetHandle || null,
+      type: e.type || 'default'
+    }));
+    addToHistory(nodes, canvasEdges);
   }, [nodes, edges, addToHistory]);
 
   const onEdgesDelete = useCallback((deletedEdges: Edge[]) => {
     console.log('Deleted edges:', deletedEdges);
-    addToHistory(nodes, edges as any);
+    // Convert edges to CanvasEdge format for addToHistory
+    const canvasEdges: CanvasEdge[] = edges.map(e => ({
+      ...e,
+      sourceHandle: e.sourceHandle || null,
+      targetHandle: e.targetHandle || null,
+      type: e.type || 'default'
+    }));
+    addToHistory(nodes, canvasEdges);
   }, [nodes, edges, addToHistory]);
 
   const handleSave = useCallback(() => {
@@ -319,14 +339,28 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
           : node
       )
     );
-    addToHistory(nodes, edges as any);
+    // Convert edges to CanvasEdge format for addToHistory
+    const canvasEdges: CanvasEdge[] = edges.map(e => ({
+      ...e,
+      sourceHandle: e.sourceHandle || null,
+      targetHandle: e.targetHandle || null,
+      type: e.type || 'default'
+    }));
+    addToHistory(nodes, canvasEdges);
   }, [setNodes, nodes, edges, addToHistory]);
 
   const handleNodeConfigDelete = useCallback((nodeId: string) => {
     setNodes(currentNodes => currentNodes.filter(node => node.id !== nodeId));
     setEdges(currentEdges => currentEdges.filter(edge => edge.source !== nodeId && edge.target !== nodeId));
     setSelectedNode(null);
-    addToHistory(nodes, edges as any);
+    // Convert edges to CanvasEdge format for addToHistory
+    const canvasEdges: CanvasEdge[] = edges.map(e => ({
+      ...e,
+      sourceHandle: e.sourceHandle || null,
+      targetHandle: e.targetHandle || null,
+      type: e.type || 'default'
+    }));
+    addToHistory(nodes, canvasEdges);
   }, [setNodes, setEdges, nodes, edges, addToHistory]);
 
   const nodePaletteItems = [
