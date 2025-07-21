@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Clock, Timer, Pause, Settings } from 'lucide-react';
 import { DelayNodeData } from '../../../types/canvas';

@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { GitBranch, Filter, ToggleLeft, Shield, Settings } from 'lucide-react';
 import { ConditionNodeData } from '../../../types/canvas';

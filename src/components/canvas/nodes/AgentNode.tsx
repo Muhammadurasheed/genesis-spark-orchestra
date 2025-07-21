@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Bot, Settings, Play, Pause, AlertCircle } from 'lucide-react';
 import { AgentNodeData } from '../../../types/canvas';

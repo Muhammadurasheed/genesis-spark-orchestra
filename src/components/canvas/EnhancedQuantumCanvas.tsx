@@ -14,6 +14,7 @@ import {
   NodeTypes,
   Panel,
   MarkerType,
+  BackgroundVariant,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
@@ -184,13 +185,9 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
   } = useEnhancedCanvasStore();
 
   const [selectedNode, setSelectedNode] = useState<Node<NodeData> | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [isSelecting, setIsSelecting] = useState(false);
   const [showNodePalette, setShowNodePalette] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [showPerformancePanel, setShowPerformancePanel] = useState(false);
-  const [showDebugPanel, setShowDebugPanel] = useState(false);
-  const [draggedNodeType, setDraggedNodeType] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -198,6 +195,7 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
     (params: Connection) => {
       const edge = {
         ...params,
+        id: `edge-${params.source}-${params.target}-${Date.now()}`,
         type: 'smoothstep',
         animated: true,
         markerEnd: {
@@ -211,18 +209,18 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
   );
 
   const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setSelectedNode(node);
+    setSelectedNode(node as Node<NodeData>);
     setSelectedNodes([node.id]);
   }, [setSelectedNodes]);
 
   const onNodeDoubleClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setSelectedNode(node);
+    setSelectedNode(node as Node<NodeData>);
   }, []);
 
   const onSelectionChange = useCallback((params: any) => {
     if (params.nodes.length > 0) {
       setSelectedNodes(params.nodes.map((n: Node) => n.id));
-      setSelectedNode(params.nodes[0]);
+      setSelectedNode(params.nodes[0] as Node<NodeData>);
     } else {
       setSelectedNodes([]);
       setSelectedNode(null);
@@ -343,8 +341,7 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
       {showNeuralNetwork && (
         <div className="absolute inset-0 z-0">
           <NeuralNetwork 
-            particleCount={Math.floor(particleIntensity * 100)}
-            connectionOpacity={particleIntensity}
+            intensity={particleIntensity}
           />
         </div>
       )}
@@ -384,13 +381,11 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
           zoomOnPinch
           zoomOnDoubleClick
           preventScrolling
-          onDragStart={() => setIsDragging(true)}
-          onDragEnd={() => setIsDragging(false)}
           onSelectionStart={() => setIsSelecting(true)}
           onSelectionEnd={() => setIsSelecting(false)}
         >
           <Background 
-            variant={showGrid ? 'dots' : 'lines'}
+            variant={showGrid ? ('dots' as BackgroundVariant) : ('lines' as BackgroundVariant)}
             gap={15}
             size={1}
             color="#e2e8f0"
@@ -630,7 +625,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
                   key={item.type}
                   draggable
                   onDragStart={(e) => {
-                    setDraggedNodeType(item.type);
                     e.dataTransfer.setData('application/reactflow', item.type);
                   }}
                   className="w-full flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors"

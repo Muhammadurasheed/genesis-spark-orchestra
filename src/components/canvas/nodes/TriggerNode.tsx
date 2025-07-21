@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Zap, Clock, Webhook, MousePointer, Settings } from 'lucide-react';
 import { TriggerNodeData } from '../../../types/canvas';
