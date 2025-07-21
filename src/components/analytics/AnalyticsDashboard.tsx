@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   BarChart,
   Bar,
@@ -18,29 +18,24 @@ import {
   AreaChart,
 } from 'recharts';
 import {
-  Calendar,
   Users,
-  MessageSquare,
   TrendingUp,
-  Activity,
   Clock,
   Target,
   AlertCircle,
   CheckCircle,
-  Zap,
   Brain,
+  Activity,
   Download,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { Button } from '../ui/Button';
 
 interface AnalyticsDashboardProps {
-  guildId: string;
+  guildId?: string;
 }
 
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
-
-export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ guildId }) => {
+export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'agents' | 'performance' | 'insights'>('overview');
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d' | '90d'>('7d');
   const [refreshing, setRefreshing] = useState(false);
@@ -166,7 +161,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ guildId 
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: { name: string; percent: number }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -382,7 +377,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ guildId 
             {[
               { key: 'overview', label: 'Overview', icon: TrendingUp },
               { key: 'agents', label: 'Agents', icon: Users },
-              { key: 'performance', label: 'Performance', icon: Zap },
+              { key: 'performance', label: 'Performance', icon: Activity },
               { key: 'insights', label: 'AI Insights', icon: Brain },
             ].map(({ key, label, icon: Icon }) => (
               <button
