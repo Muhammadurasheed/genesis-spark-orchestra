@@ -4,11 +4,7 @@ import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Zap, Clock, Webhook, MousePointer, Settings } from 'lucide-react';
 import { TriggerNodeData } from '../../../types/canvas';
 
-export interface TriggerNodeProps extends NodeProps<TriggerNodeData> {
-  // No additional props needed - NodeProps includes all required properties
-}
-
-const TriggerNode: React.FC<TriggerNodeProps> = memo(({ data, selected }) => {
+const TriggerNode = memo(({ data, selected }: NodeProps<TriggerNodeData>) => {
   const getTriggerIcon = (type: string) => {
     switch (type) {
       case 'manual': return <MousePointer className="h-5 w-5" />;

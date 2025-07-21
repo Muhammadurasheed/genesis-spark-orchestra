@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import {
   ReactFlow,
@@ -48,7 +47,6 @@ import { NodeConfigPanel } from '../ui/NodeConfig/NodeConfigPanel';
 import { NodeData } from '../../types/canvas';
 import { useEnhancedCanvasStore } from '../../stores/enhancedCanvasStore';
 import { NeuralNetwork } from '../ui/NeuralNetwork';
-import { Button } from '../ui/Button';
 
 // Import node components
 import AgentNode from './nodes/AgentNode';
@@ -150,7 +148,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   
-  // Enhanced canvas store
   const {
     canvasMode,
     setCanvasMode,
@@ -185,7 +182,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
     setTheme,
   } = useEnhancedCanvasStore();
 
-  // Local state
   const [selectedNode, setSelectedNode] = useState<Node<NodeData> | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isSelecting, setIsSelecting] = useState(false);
@@ -195,10 +191,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
   const [showDebugPanel, setShowDebugPanel] = useState(false);
   const [draggedNodeType, setDraggedNodeType] = useState<string | null>(null);
 
-  // Refs
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // Event handlers
   const onConnect = useCallback(
     (params: Connection) => {
       const edge = {
@@ -311,7 +305,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
     setIsExecuting(true);
     console.log('Executing workflow...');
     
-    // Simulate workflow execution
     await new Promise(resolve => setTimeout(resolve, 3000));
     
     setIsExecuting(false);
@@ -336,7 +329,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
     addToHistory(nodes, edges);
   }, [setNodes, setEdges, nodes, edges, addToHistory]);
 
-  // Node palette items
   const nodePaletteItems = [
     { type: 'agent', label: 'AI Agent', icon: Bot, color: 'from-blue-400 to-blue-600' },
     { type: 'trigger', label: 'Trigger', icon: Zap, color: 'from-orange-400 to-orange-600' },
@@ -347,7 +339,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
 
   return (
     <div className={`relative w-full h-full ${className}`}>
-      {/* Neural Network Background */}
       {showNeuralNetwork && (
         <div className="absolute inset-0 z-0">
           <NeuralNetwork 
@@ -357,7 +348,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
         </div>
       )}
 
-      {/* Main Canvas */}
       <div ref={canvasRef} className="w-full h-full">
         <ReactFlow
           nodes={nodes}
@@ -398,7 +388,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
           onSelectionStart={() => setIsSelecting(true)}
           onSelectionEnd={() => setIsSelecting(false)}
         >
-          {/* Background */}
           <Background 
             variant={showGrid ? 'dots' : 'lines'}
             gap={15}
@@ -407,7 +396,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
             style={{ opacity: showGrid ? 0.5 : 0.2 }}
           />
           
-          {/* Controls */}
           <Controls 
             showZoom={true}
             showFitView={true}
@@ -421,7 +409,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
             }}
           />
           
-          {/* MiniMap */}
           {showMinimap && (
             <MiniMap
               position="top-right"
@@ -445,10 +432,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
             />
           )}
 
-          {/* Top Toolbar */}
           <Panel position="top-left">
             <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded-lg p-2 border border-gray-200">
-              {/* Canvas Mode Selector */}
               <div className="flex items-center space-x-1">
                 {[
                   { mode: 'design', icon: Layers, label: 'Design' },
@@ -474,7 +459,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
 
               <div className="w-px h-6 bg-gray-300" />
 
-              {/* Action Buttons */}
               <div className="flex items-center space-x-1">
                 <button
                   onClick={handleSave}
@@ -501,7 +485,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
 
               <div className="w-px h-6 bg-gray-300" />
 
-              {/* Undo/Redo */}
               <div className="flex items-center space-x-1">
                 <button
                   onClick={handleUndo}
@@ -521,7 +504,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
 
               <div className="w-px h-6 bg-gray-300" />
 
-              {/* View Controls */}
               <div className="flex items-center space-x-1">
                 <button
                   onClick={centerCanvas}
@@ -563,10 +545,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
             </div>
           </Panel>
 
-          {/* Right Toolbar */}
           <Panel position="top-right">
             <div className="flex flex-col space-y-2">
-              {/* Node Palette Toggle */}
               <button
                 onClick={() => setShowNodePalette(!showNodePalette)}
                 className="flex items-center justify-center p-3 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
@@ -575,7 +555,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
                 <Plus className="h-5 w-5" />
               </button>
 
-              {/* Execute Button */}
               <button
                 onClick={handleExecute}
                 disabled={isExecuting}
@@ -593,7 +572,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
                 )}
               </button>
 
-              {/* Settings */}
               <button
                 onClick={() => setShowSettings(!showSettings)}
                 className="flex items-center justify-center p-3 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
@@ -604,7 +582,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
             </div>
           </Panel>
 
-          {/* Status Bar */}
           <Panel position="bottom-left">
             <div className="flex items-center space-x-4 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 border border-gray-200 text-sm text-gray-600">
               <div className="flex items-center space-x-2">
@@ -634,7 +611,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
         </ReactFlow>
       </div>
 
-      {/* Node Palette */}
       {showNodePalette && (
         <div className="absolute top-16 right-4 w-64 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 shadow-lg z-50">
           <div className="p-4">
@@ -672,7 +648,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
         </div>
       )}
 
-      {/* Settings Panel */}
       {showSettings && (
         <div className="absolute top-16 right-4 w-80 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 shadow-lg z-50">
           <div className="p-4">
@@ -687,7 +662,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
             </div>
             
             <div className="space-y-4">
-              {/* Visual Settings */}
               <div>
                 <h4 className="text-sm font-medium text-gray-900 mb-2">Visual</h4>
                 <div className="space-y-2">
@@ -742,7 +716,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
                 </div>
               </div>
 
-              {/* Performance Settings */}
               <div>
                 <h4 className="text-sm font-medium text-gray-900 mb-2">Performance</h4>
                 <div className="space-y-2">
@@ -780,7 +753,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
                 </div>
               </div>
 
-              {/* Theme Settings */}
               <div>
                 <h4 className="text-sm font-medium text-gray-900 mb-2">Theme</h4>
                 <div className="space-y-2">
@@ -802,7 +774,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({ cl
         </div>
       )}
 
-      {/* Node Configuration Panel */}
       <NodeConfigPanel
         node={selectedNode}
         onClose={() => setSelectedNode(null)}

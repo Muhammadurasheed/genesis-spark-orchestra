@@ -4,11 +4,7 @@ import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Bot, Settings, Play, Pause, AlertCircle } from 'lucide-react';
 import { AgentNodeData } from '../../../types/canvas';
 
-export interface AgentNodeProps extends NodeProps<AgentNodeData> {
-  // No additional props needed - NodeProps includes all required properties
-}
-
-const AgentNode: React.FC<AgentNodeProps> = memo(({ data, selected }) => {
+const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'ready': return 'bg-green-100 text-green-800 border-green-200';

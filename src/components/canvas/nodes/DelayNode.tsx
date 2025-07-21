@@ -4,11 +4,7 @@ import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Clock, Timer, Pause, Settings } from 'lucide-react';
 import { DelayNodeData } from '../../../types/canvas';
 
-export interface DelayNodeProps extends NodeProps<DelayNodeData> {
-  // No additional props needed - NodeProps includes all required properties
-}
-
-const DelayNode: React.FC<DelayNodeProps> = memo(({ data, selected }) => {
+const DelayNode = memo(({ data, selected }: NodeProps<DelayNodeData>) => {
   const getDelayIcon = (type: string) => {
     switch (type) {
       case 'fixed': return <Clock className="h-5 w-5" />;

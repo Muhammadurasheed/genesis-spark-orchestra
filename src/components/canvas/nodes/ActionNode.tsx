@@ -4,11 +4,7 @@ import { Handle, Position, NodeProps } from '@xyflow/react';
 import { Send, Mail, Database, Webhook, Bell, Settings, CheckCircle, XCircle } from 'lucide-react';
 import { ActionNodeData } from '../../../types/canvas';
 
-export interface ActionNodeProps extends NodeProps<ActionNodeData> {
-  // No additional props needed - NodeProps includes all required properties
-}
-
-const ActionNode: React.FC<ActionNodeProps> = memo(({ data, selected }) => {
+const ActionNode = memo(({ data, selected }: NodeProps<ActionNodeData>) => {
   const getActionIcon = (type: string) => {
     switch (type) {
       case 'api': return <Send className="h-5 w-5" />;

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   BarChart,
@@ -40,7 +39,6 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = () => {
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d' | '90d'>('7d');
   const [refreshing, setRefreshing] = useState(false);
 
-  // Mock data - in Phase 2, this will be replaced with real API calls
   const overviewData = [
     { name: 'Mon', tasks: 24, interactions: 45, success: 22 },
     { name: 'Tue', tasks: 35, interactions: 52, success: 31 },
@@ -96,6 +94,10 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = () => {
       </div>
     </Card>
   );
+
+  const renderPieLabel = (entry: any) => {
+    return `${entry.name} ${entry.percent}%`;
+  };
 
   const renderOverview = () => (
     <div className="space-y-6">
@@ -161,7 +163,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = () => {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }: { name: string; percent: number }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={renderPieLabel}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"

@@ -4,11 +4,7 @@ import { Handle, Position, NodeProps } from '@xyflow/react';
 import { GitBranch, Filter, ToggleLeft, Shield, Settings } from 'lucide-react';
 import { ConditionNodeData } from '../../../types/canvas';
 
-export interface ConditionNodeProps extends NodeProps<ConditionNodeData> {
-  // No additional props needed - NodeProps includes all required properties
-}
-
-const ConditionNode: React.FC<ConditionNodeProps> = memo(({ data, selected }) => {
+const ConditionNode = memo(({ data, selected }: NodeProps<ConditionNodeData>) => {
   const getConditionIcon = (type: string) => {
     switch (type) {
       case 'if': return <GitBranch className="h-5 w-5" />;
