@@ -21,18 +21,8 @@ import {
   RotateCcw, 
   Save, 
   Upload, 
-  Download, 
-  Zap,
-  Settings,
-  Eye,
-  EyeOff,
-  Maximize,
-  Minimize,
+  Download,
   Grid,
-  MousePointer,
-  Hand,
-  ZoomIn,
-  ZoomOut,
   Undo,
   Redo
 } from 'lucide-react';
@@ -42,11 +32,11 @@ import { toast } from 'react-hot-toast';
 import { useCanvasStore } from '../../stores/canvasStore';
 import { canvasService } from '../../services/canvasService';
 import { NodeData, CanvasEdge } from '../../types/canvas';
-import { AgentNode } from './nodes/AgentNode';
-import { TriggerNode } from './nodes/TriggerNode';
-import { ActionNode } from './nodes/ActionNode';
-import { ConditionNode } from './nodes/ConditionNode';
-import { DelayNode } from './nodes/DelayNode';
+import AgentNode from './nodes/AgentNode';
+import TriggerNode from './nodes/TriggerNode';
+import ActionNode from './nodes/ActionNode';
+import ConditionNode from './nodes/ConditionNode';
+import DelayNode from './nodes/DelayNode';
 
 const nodeTypes = {
   agent: AgentNode,
@@ -88,7 +78,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
   showControls = true,
 }) => {
   const {
-    canvasMode,
     setCanvasMode,
     isExecuting,
     setIsExecuting,
@@ -104,9 +93,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isGridVisible, setIsGridVisible] = useState(true);
-  const [isMinimapVisible, setIsMinimapVisible] = useState(true);
-  const [interactionMode, setInteractionMode] = useState<'select' | 'pan'>('select');
-  const [autoSave, setAutoSave] = useState(true);
+  const [interactionMode] = useState<'select' | 'pan'>('select');
+  const [autoSave] = useState(true);
   const [executionHistory, setExecutionHistory] = useState<any[]>([]);
 
   // Auto-save functionality
@@ -288,20 +276,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
       }
     };
     input.click();
-  };
-
-  const handleZoomIn = () => {
-    setViewport({
-      ...viewport,
-      zoom: Math.min(viewport.zoom * 1.2, 3)
-    });
-  };
-
-  const handleZoomOut = () => {
-    setViewport({
-      ...viewport,
-      zoom: Math.max(viewport.zoom / 1.2, 0.1)
-    });
   };
 
   return (
