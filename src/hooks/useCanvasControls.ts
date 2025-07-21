@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import { Node, useReactFlow } from '@xyflow/react';
 import { useCanvasStore } from '../stores/canvasStore';
@@ -12,7 +13,24 @@ export function useCanvasControls() {
 
   const reactFlowInstance = useReactFlow();
   const { getNode } = reactFlowInstance || {}; 
-  const { addToHistory, setSelectedNode: storeSetSelectedNode } = useCanvasStore();
+  const { 
+    addToHistory, 
+    setSelectedNode: storeSetSelectedNode,
+    undo,
+    redo,
+    history,
+    historyIndex
+  } = useCanvasStore();
+  
+  // Calculate undo/redo availability
+  const canUndo = historyIndex > 0;
+  const canRedo = historyIndex < history.length - 1;
+  
+  // Clear history function
+  const clearHistory = useCallback(() => {
+    // This would need to be implemented in the store
+    console.log('Clear history called');
+  }, []);
   
   // Open the node configuration panel
   const openNodeConfig = useCallback((nodeId: string) => {
@@ -106,6 +124,15 @@ export function useCanvasControls() {
     openNodeConfig,
     closeNodeConfig,
     updateNodeData,
-    deleteNode
+    deleteNode,
+    // History functionality
+    history,
+    historyIndex,
+    canUndo,
+    canRedo,
+    addToHistory,
+    undo,
+    redo,
+    clearHistory
   };
 }
