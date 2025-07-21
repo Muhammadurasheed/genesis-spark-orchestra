@@ -95,7 +95,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
   const [isGridVisible, setIsGridVisible] = useState(true);
   const [interactionMode] = useState<'select' | 'pan'>('select');
   const [autoSave] = useState(true);
-  const [executionHistory, setExecutionHistory] = useState<any[]>([]);
 
   // Auto-save functionality
   useEffect(() => {
@@ -130,11 +129,12 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
       setIsExecuting(true);
       setCanvasMode('simulate');
       
-      // Reset node statuses
+      // Reset node statuses with proper typing
       const resetNodes = nodes.map(node => ({
         ...node,
-        data: { ...node.data, status: 'ready' }
-      }));
+        data: { ...node.data, status: 'ready' } as NodeData
+      })) as Node<NodeData>[];
+      
       setNodes(resetNodes);
 
       const canvasEdges = convertToCanvasEdges(edges);
@@ -150,15 +150,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
         
         toast.success('Workflow execution started');
         console.log('Execution result:', result);
-        
-        // Add to execution history
-        setExecutionHistory(prev => [...prev, {
-          id: result.executionId,
-          timestamp: new Date(),
-          status: 'running',
-          nodes: resetNodes.length,
-          edges: canvasEdges.length,
-        }]);
       }
       
       updateExecutionMetrics({
@@ -203,8 +194,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
   const handleUndo = () => {
     const historyState = undo();
     if (historyState) {
-      setNodes(historyState.nodes);
-      setEdges(historyState.edges);
+      setNodes(historyState.nodes as Node<NodeData>[]);
+      setEdges(convertToCanvasEdges(historyState.edges as Edge[]));
       toast.success('Undone');
     }
   };
@@ -212,8 +203,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
   const handleRedo = () => {
     const historyState = redo();
     if (historyState) {
-      setNodes(historyState.nodes);
-      setEdges(historyState.edges);
+      setNodes(historyState.nodes as Node<NodeData>[]);
+      setEdges(convertToCanvasEdges(historyState.edges as Edge[]));
       toast.success('Redone');
     }
   };
@@ -221,7 +212,6 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
   const handleReset = () => {
     setNodes([]);
     setEdges([]);
-    setExecutionHistory([]);
     updateExecutionMetrics({
       totalNodes: 0,
       completedNodes: 0,
@@ -264,8 +254,8 @@ export const EnhancedQuantumCanvas: React.FC<EnhancedQuantumCanvasProps> = ({
           try {
             const importData = JSON.parse(e.target?.result as string);
             if (importData.nodes && importData.edges) {
-              setNodes(importData.nodes);
-              setEdges(importData.edges);
+              setNodes(importData.nodes as Node<NodeData>[]);
+              setEdges(convertToCanvasEdges(importData.edges));
               toast.success('Workflow imported successfully');
             }
           } catch (error) {
