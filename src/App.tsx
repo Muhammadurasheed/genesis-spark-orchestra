@@ -10,7 +10,6 @@ import { QuantumLoader } from './components/ui/QuantumLoader';
 import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
 import { MagicalBackground } from './components/ui/MagicalBackground';
 import { getAuthErrorFromURL } from './lib/auth-utils';
-import { HolographicButton } from './components/ui/HolographicButton';
 import { MainDashboard } from './components/pages/MainDashboard';
 import { AgentsPage } from './components/pages/AgentsPage';
 import { GuildsPage } from './components/pages/GuildsPage';
@@ -25,7 +24,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('dashboard');
   const [guestMode, setGuestMode] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [showAnalytics, setShowAnalytics] = useState(false);
 
   useEffect(() => {
     console.log('🚀 Phase 1: Initializing GenesisOS Foundation...');
