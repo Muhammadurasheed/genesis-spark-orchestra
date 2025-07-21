@@ -1,3 +1,4 @@
+
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ReactFlow,
@@ -209,8 +210,8 @@ export const EnhancedQuantumCanvas: React.FC = () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    input.onchange = (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
+    input.onchange = () => {
+      const file = input.files?.[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
